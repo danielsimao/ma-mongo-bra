@@ -7,7 +7,8 @@ import "./App.css";
 function App() {
   return (
     <div className="App">
-      <AppNavBar /> <ShoppingList />
+      <AppNavBar />
+      <ShoppingList />
     </div>
   );
 }

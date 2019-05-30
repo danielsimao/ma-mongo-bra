@@ -19,7 +19,7 @@ function reducer(state = initialState, action) {
     case ADD_ITEMS:
       return {
         ...state,
-        items: [...state.items, { id: uuid(), name: action.payload }]
+        items: [action.payload, ...state.items]
       };
     case DELETE_ITEMS:
       return {

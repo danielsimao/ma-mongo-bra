@@ -13,19 +13,6 @@ const ShoppingList = () => {
   return (
     <div>
       <Container>
-        <Button
-          color="dark"
-          style={{ marginBottom: "2rem" }}
-          onClick={() => {
-            const name = prompt("Enter item");
-            if (name) {
-              dispatch({ type: "ADD_ITEMS", payload: name });
-            }
-          }}
-        >
-          Add Item
-        </Button>
-        {console.log(state)}
         <ListGroup>
           <TransitionGroup className="shopping-list">
             {items.map(({ id, name }) => (
@@ -35,10 +22,9 @@ const ShoppingList = () => {
                     className="remove-btn"
                     color="danger"
                     size="sm"
-                    onClick={() => {
-                      dispatch({ type: "DELETE_ITEMS", payload: id });
-                      // setItem(items.filter(item => item.id !== id));
-                    }}
+                    onClick={() =>
+                      dispatch({ type: "DELETE_ITEMS", payload: id })
+                    }
                   >
                     &times;
                   </Button>

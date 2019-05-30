@@ -9,8 +9,8 @@ import {
   Label,
   Input
 } from "reactstrap";
-import uuid from "uuid";
 import { Store } from "../Store";
+import axios from "axios";
 
 const ItemModel = () => {
   const [modal, toggleModal] = React.useState(false);
@@ -20,11 +20,13 @@ const ItemModel = () => {
   const onSubmit = e => {
     e.preventDefault();
     const newItem = {
-      id: uuid(),
       ...name
     };
 
-    dispatch({ type: "ADD_ITEMS", payload: newItem });
+    axios
+      .post("/api/items", newItem)
+      .then(res => dispatch({ type: "ADD_ITEMS", payload: res.data }));
+
     toggleModal(!modal);
   };
 

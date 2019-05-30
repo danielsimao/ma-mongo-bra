@@ -1,21 +1,22 @@
 import React from "react";
-import uuid from "uuid";
-import { GET_ITEMS, ADD_ITEMS, DELETE_ITEMS } from "./actions/types";
+import {
+  GET_ITEMS,
+  ADD_ITEMS,
+  DELETE_ITEMS,
+  ITEMS_LOADING
+} from "./actions/types";
 
 export const Store = React.createContext();
 
 const initialState = {
-  items: [
-    { id: uuid(), name: "Eggs" },
-    { id: uuid(), name: "Milk" },
-    { id: uuid(), name: "Steak" }
-  ]
+  items: [],
+  loading: false
 };
 
 function reducer(state = initialState, action) {
   switch (action.type) {
     case GET_ITEMS:
-      return { ...state };
+      return { ...state, items: action.payload, loading: false };
     case ADD_ITEMS:
       return {
         ...state,
@@ -24,8 +25,10 @@ function reducer(state = initialState, action) {
     case DELETE_ITEMS:
       return {
         ...state,
-        items: state.items.filter(item => item.id !== action.payload)
+        items: state.items.filter(item => item._id !== action.payload)
       };
+    case ITEMS_LOADING:
+      return { ...state, loading: true };
     default:
       return state;
   }

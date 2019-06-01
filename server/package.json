@@ -9,7 +9,7 @@
     "server": "nodemon server.js",
     "client": "yarn --cwd ./client start",
     "dev": "concurrently \"yarn server\" \"yarn client\"",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false yarn -cwd ./client && yarn --cwd ./client build"
+    "heroku-postbuild": "set NPM_CONFIG_PRODUCTION=false && yarn --cwd ./client && yarn --cwd ./client build"
   },
   "keywords": [],
   "author": "",

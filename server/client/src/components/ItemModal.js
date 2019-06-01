@@ -9,13 +9,12 @@ import {
   Label,
   Input
 } from "reactstrap";
-import { Store } from "../Store";
-import axios from "axios";
+import { connect } from "react-redux";
+import { addItem } from "../actions/itemActions";
 
-const ItemModel = () => {
+const ItemModal = props => {
   const [modal, toggleModal] = React.useState(false);
   const [name, setName] = React.useState("");
-  const { dispatch } = React.useContext(Store);
 
   const onSubmit = e => {
     e.preventDefault();
@@ -23,9 +22,7 @@ const ItemModel = () => {
       ...name
     };
 
-    axios
-      .post("/api/items", newItem)
-      .then(res => dispatch({ type: "ADD_ITEMS", payload: res.data }));
+    props.addItem(newItem);
 
     toggleModal(!modal);
   };
@@ -69,4 +66,12 @@ const ItemModel = () => {
   );
 };
 
-export default ItemModel;
+const mapStateToProps = state => ({
+  item: state.item,
+  isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(
+  mapStateToProps,
+  { addItem }
+)(ItemModal);

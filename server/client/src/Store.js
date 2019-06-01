@@ -1,41 +1,16 @@
-import React from "react";
-import {
-  GET_ITEMS,
-  ADD_ITEMS,
-  DELETE_ITEMS,
-  ITEMS_LOADING
-} from "./actions/types";
+import { createStore, applyMiddleware, compose } from "redux";
+import thunk from "redux-thunk";
+import rootReducer from "./reducers";
 
-export const Store = React.createContext();
+const initialState = {};
 
-const initialState = {
-  items: [],
-  loading: false
-};
+const middleWare = [thunk];
 
-function reducer(state = initialState, action) {
-  switch (action.type) {
-    case GET_ITEMS:
-      return { ...state, items: action.payload, loading: false };
-    case ADD_ITEMS:
-      return {
-        ...state,
-        items: [action.payload, ...state.items]
-      };
-    case DELETE_ITEMS:
-      return {
-        ...state,
-        items: state.items.filter(item => item._id !== action.payload)
-      };
-    case ITEMS_LOADING:
-      return { ...state, loading: true };
-    default:
-      return state;
-  }
-}
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(
+  rootReducer,
+  initialState,
+  composeEnhancers(applyMiddleware(...middleWare))
+);
 
-export function StoreProvider(props) {
-  const [state, dispatch] = React.useReducer(reducer, initialState);
-  const value = { state, dispatch };
-  return <Store.Provider value={value}>{props.children}</Store.Provider>;
-}
+export default store;

@@ -29,13 +29,18 @@ const ItemModal = props => {
 
   return (
     <div>
-      <Button
-        color="dark"
-        style={{ marginBottom: "2rem" }}
-        onClick={() => toggleModal(!modal)}
-      >
-        Add Item
-      </Button>
+      {props.isAuthenticated ? (
+        <Button
+          color="dark"
+          style={{ marginBottom: "2rem" }}
+          onClick={() => toggleModal(!modal)}
+        >
+          Add Item
+        </Button>
+      ) : (
+        <h4 className="mb-3 ml-4">Please log in to manage items</h4>
+      )}
+
       <Modal isOpen={modal} toggle={() => toggleModal(!modal)}>
         <ModalHeader toggle={() => toggleModal(!modal)}>
           Add To Shopping List

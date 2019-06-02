@@ -3,61 +3,45 @@ import AppNavbar from "./components/AppNavbar";
 import ShoppingList from "./components/ShoppingList";
 import ItemModal from "./components/ItemModal";
 import { Container } from "reactstrap";
-
-import { Provider } from "react-redux";
-import store from "./store";
 import { loadUser } from "./actions/authActions";
-
+import { connect } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
-const App = () => {
-  const [mount, setMount] = useState(false);
+const App = ({ loadUser, auth }) => {
+  const [mount, setMount] = useState(true);
 
   React.useEffect(() => {
-    if (!mount) {
-      store.dispatch(loadUser());
-      setMount(!mount);
+    if (auth.isAuthenticated === null && !auth.isLoading) {
+      loadUser();
     }
-  }, [mount]);
+
+    if (auth.isAuthenticated !== null && !auth.isLoading) {
+      setMount(true);
+    }
+  }, [auth.isAuthenticated, auth.isLoading, loadUser, mount]);
 
   return (
-    <Provider store={store}>
-      <div className="App">
-        <AppNavbar />
-        <Container>
-          {mount && (
-            <>
-              <ItemModal />
-              <ShoppingList />
-            </>
-          )}
-        </Container>
-      </div>
-    </Provider>
+    <div className="App">
+      {console.log(auth)}
+      {mount && (
+        <>
+          <AppNavbar />
+          <Container>
+            <ItemModal />
+            <ShoppingList />
+          </Container>
+        </>
+      )}
+    </div>
   );
 };
 
-export default App;
+const mapStateToProps = state => ({
+  auth: state.auth
+});
 
-// class App extends Component {
-//   componentDidMount() {
-//     store.dispatch(loadUser());
-//   }
-
-//   render() {
-//     return (
-//       <Provider store={store}>
-//         <div className="App">
-//           <AppNavbar />
-//           <Container>
-//             <ItemModal />
-//             <ShoppingList />
-//           </Container>
-//         </div>
-//       </Provider>
-//     );
-//   }
-// }
-
-// export default App;
+export default connect(
+  mapStateToProps,
+  { loadUser }
+)(App);
